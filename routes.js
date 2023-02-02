@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { fetchFreeGames } = require("./fetch");
+const { mapGames } = require("./helpers");
 
 router.use(express.json());
 router.use(express.urlencoded());
@@ -11,36 +12,10 @@ router.get("/", function (req, res) {
 
 router.get("/games/", async function (req, res) {
   try {
-    if (!req.query.platform || !req.query.genre) {
-      return res.send({
-        msg: "Invalid params!",
-      });
-    }
-
-    let mappedArray = [];
-    let platform = req.query.platform;
-    let genre = req.query.genre;
-
     let data = await fetchFreeGames();
+    let games = mapGames(req.query, data);
 
-    // Based on platform
-    if (genre === "All") {
-      data.map((game) => {
-        if (game.platform === platform) {
-          mappedArray.push(game);
-        }
-      });
-      return res.send({ msg: "Success", data: mappedArray });
-    }
-    // Based on platform and genre
-    else {
-      data.map((game) => {
-        if (game.genre === genre && game.platform === platform) {
-          mappedArray.push(game);
-        }
-      });
-      res.send({ msg: "Success", data: mappedArray });
-    }
+    res.send(games);
   } catch (err) {
     console.log(err);
   }
