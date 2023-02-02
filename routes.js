@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { fetchFreeGames } = require("./fetch");
-const { mapGames } = require("./helpers");
+const { filterGames } = require("./helpers");
 
 router.use(express.json());
 router.use(express.urlencoded());
@@ -13,7 +13,7 @@ router.get("/", function (req, res) {
 router.get("/games/", async function (req, res) {
   try {
     let data = await fetchFreeGames();
-    let games = mapGames(req.query, data);
+    let games = filterGames(req.query, data);
 
     res.send(games);
   } catch (err) {

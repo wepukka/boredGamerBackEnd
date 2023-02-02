@@ -1,25 +1,17 @@
 module.exports = {
-  mapGames(query, data) {
+  filterGames(query, data) {
     if (!query.platform || !query.genre) {
       return { msg: "Invalid params" };
     }
 
-    const arr = [];
-
     if (query.genre === "All") {
-      data.map((game) => {
-        if (game.platform === query.platform) {
-          arr.push(game);
-        }
-      });
-      return { data: arr };
+      let result = data.filter((data) => data.platform === query.platform);
+      return { data: result };
     } else {
-      data.map((game) => {
-        if (game.genre === query.genre && game.platform === query.platform) {
-          arr.push(game);
-        }
-      });
-      return { data: arr };
+      let result = data.filter(
+        (data) => data.platform === query.platform && data.genre === query.genre
+      );
+      return { data: result };
     }
   },
 };
