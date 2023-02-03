@@ -21,6 +21,8 @@ router.get("/games/", async function (req, res) {
   }
 });
 
+
+// List all genres that has games, FREETOGAME api provides many genres which dont have games listed 
 router.get("/genres/", async function (req, res) {
   try {
     let data = await fetchFreeGames();
